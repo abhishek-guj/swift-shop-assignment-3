@@ -17,11 +17,11 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     const theme = localStorage.getItem("theme");
 
     // https://stackoverflow.com/questions/61117608/how-do-i-set-system-preference-dark-mode-in-a-react-app-but-also-allow-users-to
-    const systemTheme = window.matchMedia("(prefers-color-scheme:dark)").matches;
+    const systemPref = window.matchMedia("(prefers-color-scheme:dark)").matches;
 
-    alert("system theme is set to: "+ (systemTheme?"dark":"light"))
-
-    return theme ? theme : "dark";
+    alert("system theme is set to: "+ (systemPref?"dark":"light"))
+    const sysTheme = systemPref?"dark":"light"
+    return theme ? theme : sysTheme;
   });
 
   const toggleTheme = () => {
