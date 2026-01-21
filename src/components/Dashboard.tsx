@@ -3,7 +3,7 @@ import type { IFormInput } from './data';
 
 
 type Props = {
-    totalProducts: number,
+    totalProducts?: number,
     lowStock: IFormInput[],
     sellTotal: number,
     buyTotal: number
@@ -13,9 +13,6 @@ type Props = {
 
 const Dashboard = (props: Props) => {
     const { totalProducts, lowStock, sellTotal, buyTotal } = props;
-
-   
-
     return (
         <section className='p-4 w-full flex justify-evenly border-b'>
             {/* total count */}
@@ -28,9 +25,9 @@ const Dashboard = (props: Props) => {
                 <div>Low Stock</div>
                 <div className='flex flex-col gap-0 border bg-white'>
 
-                    {lowStock.map((p, idx) => {
-                        return <div key={idx} className=' rounded-md'>{p.prodName} | {p.stock}</div>
-                    })}
+                    {/* {lowStock.map((p, idx) => {
+                        return <div key={idx} className=' rounded-md'>{p.title} | {p.stock}</div>
+                    })} */}
                 </div>
             </div>
             {/* total value */}
