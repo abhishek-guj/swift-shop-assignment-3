@@ -23,7 +23,7 @@ const ProductCard = ({ productData, updateForm }: Props) => {
             <div className='rounded-sm'>
                 <img  className='rounded-sm w-40 h-30' src={`/src/assets/${imagePaths[productData.prodCategory]}`} alt="image" />
             </div>
-            <div className='truncate'>
+            <div className='truncate dark:text-red-600'>
                 {productData.prodName}
             </div>
             <div className='flex justify-between items-center'>
