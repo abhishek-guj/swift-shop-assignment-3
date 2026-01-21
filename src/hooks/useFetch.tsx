@@ -14,7 +14,7 @@ const useFetch = (url: string) => {
         // const res = await fetch(url, {...payload})
         const response = await fetch(url);
         const result = await response.json();
-        console.log("usefetch:", result);
+        // console.log("usefetch:", result);
         setData(result);
       } catch (err) {
         console.error("error in fetch:", err);
@@ -26,6 +26,7 @@ const useFetch = (url: string) => {
     fetchData();
   }, [url]);
 
+  // console.log("ret", data)
   return { loading, data, error };
 };
 export default useFetch;

@@ -1,0 +1,43 @@
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { apiToProductMapper, type ProductContextType } from "../types/products";
+import useFetch from "../hooks/useFetch";
+
+export const ProductContext = React.createContext<ProductContextType | null>(
+  null,
+);
+
+// https://blog.logrocket.com/how-to-use-react-context-typescript/
+const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  // setting context values
+  const [products, setProducts] = useState(null);
+
+  const [categories, setCategories] = useState<string[] | null>(null);
+
+  const { loading, data, error } = useFetch("https://dummyjson.com/products");
+  const pros = data?.products.map(apiToProductMapper);
+  setProducts(pros);
+  
+  
+
+  // useEffect(() => {;
+  //   // const pros = proData?.products.map(apiToProductMapper);
+  //   // console.log("prod22");
+  //   // setProducts(pros);
+  // }, []);
+  // setting context values theme and function
+
+  return (
+    <ProductContext.Provider value={{ products, categories }}>
+      {children}
+    </ProductContext.Provider>
+  );
+};
+
+export default ProductProvider;
