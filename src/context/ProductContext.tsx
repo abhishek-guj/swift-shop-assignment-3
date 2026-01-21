@@ -4,37 +4,79 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
-import { apiToProductMapper, type ProductContextType } from "../types/products";
+import {
+  apiToProductMapper,
+  type IProduct,
+  type ProductContextType,
+} from "../types/products";
 import useFetch from "../hooks/useFetch";
 
-export const ProductContext = React.createContext<ProductContextType | null>(
-  null,
-);
+export const ProductContext = React.createContext<ProductContextType>({
+  products: [],
+  categories: [],
+  loading: false,
+  error: false,
+});
+
+// provider
+
+type productApi = {
+  id: number;
+  title: string;
+  price: number;
+  category: string;
+  stock: number;
+};
+interface ApiResponse {
+  products: productApi[];
+}
 
 // https://blog.logrocket.com/how-to-use-react-context-typescript/
 const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   // setting context values
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [search, setSearch] = useState("");
+  const [url, setUrl] = useState("https://dummyjson.com/products");
 
-  const [categories, setCategories] = useState<string[] | null>(null);
+  const { data: categoriesData } = useFetch<ApiResponse>(
+    "https://dummyjson.com/products/category-list",
+  );
 
-  const { loading, data, error } = useFetch("https://dummyjson.com/products");
-  const pros = data?.products.map(apiToProductMapper);
-  setProducts(pros);
-  
-  
+  const test = () => {
+    const { data: categoriesData } = useFetch<ApiResponse>(
+      "https://dummyjson.com/products/category-list",
+    );
+  };
 
-  // useEffect(() => {;
-  //   // const pros = proData?.products.map(apiToProductMapper);
-  //   // console.log("prod22");
-  //   // setProducts(pros);
-  // }, []);
-  // setting context values theme and function
+  // products
+
+  const { loading, data, error } = useFetch<ApiResponse>(url);
+  useEffect(() => {
+    if (data) {
+      setProducts(data.products);
+    }
+
+    if (categoriesData) {
+      setCategories(categoriesData);
+    }
+  }, [data, categoriesData]);
 
   return (
-    <ProductContext.Provider value={{ products, categories }}>
+    <ProductContext.Provider
+      value={{
+        products,
+        categories,
+        loading,
+        error,
+        setSelectedCategory,
+        selectedCategory,
+        test
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );

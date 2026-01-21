@@ -14,6 +14,8 @@ export type ProductContextType = {
   products: IProduct[];
   //   getProducts: ()=>IProduct[]
   categories: string[];
+  loading: Boolean;
+  error: Boolean;
 };
 
 // https://www.xjavascript.com/blog/mapper-typescript/
