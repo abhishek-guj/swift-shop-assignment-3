@@ -40,21 +40,27 @@ const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
-  const [url, setUrl] = useState("https://dummyjson.com/products");
+  const BASE_URL = "https://dummyjson.com/products";
+
+  const getUrl = () => {
+    if (search.trim()) {
+      return `${BASE_URL}/search?q=${search.trim()}`;
+    }
+
+    if (selectedCategory === "All") {
+      return BASE_URL;
+    }
+
+    return `${BASE_URL}/category/${selectedCategory}`;
+  };
 
   const { data: categoriesData } = useFetch<ApiResponse>(
     "https://dummyjson.com/products/category-list",
   );
 
-  const test = () => {
-    const { data: categoriesData } = useFetch<ApiResponse>(
-      "https://dummyjson.com/products/category-list",
-    );
-  };
-
   // products
+  const { loading, data, error } = useFetch<ApiResponse>(getUrl());
 
-  const { loading, data, error } = useFetch<ApiResponse>(url);
   useEffect(() => {
     if (data) {
       setProducts(data.products);
@@ -74,7 +80,8 @@ const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
         error,
         setSelectedCategory,
         selectedCategory,
-        test
+        search,
+        setSearch,
       }}
     >
       {children}

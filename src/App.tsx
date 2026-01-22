@@ -17,45 +17,21 @@ function App() {
     const data = localStorage.getItem("list");
     return data ? JSON.parse(data) : DummyData;
   });
-  
 
   useEffect(() => {
     // https://www.geeksforgeeks.org/reactjs/managing-local-storage-session-storage-using-react-hooks/
     localStorage.setItem("list", JSON.stringify(productsData));
     setProductsData(productsData);
 
-
     // ??? tmp
-
   }, [productsData]);
-
-  // sending to dashboardW
-  const totalProducts = productsData?.reduce(
-    (a, prod) => (a = a + prod.stock),
-    0,
-  );
-  const lowStock = productsData?.filter((pro) => pro.stock < 10);
-  const buyTotal = productsData?.reduce(
-    (a, pro) => (a = a + pro.buyPrice * pro.stock),
-    0,
-  );
-  const sellTotal = productsData?.reduce(
-    (a, pro) => (a = a + pro.price * pro.stock),
-    0,
-  );
-  // sending to dashboard
 
   return (
     <div className="mt-10 w-full">
       <Layout>
         <main className="flex flex-col px-4">
           {/* <Sidebar /> */}
-          <Dashboard
-            totalProducts={totalProducts}
-            lowStock={lowStock}
-            sellTotal={sellTotal}
-            buyTotal={buyTotal}
-          />
+          <Dashboard />
           <Catalog
             setProductsData={setProductsData}
             productsData={productsData}
